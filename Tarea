@@ -1,0 +1,94 @@
+class Tarea():
+    def __init__(self):
+        pass
+
+    #--------------------------------------------------------------------------------------------------------
+    def Sumas(self, matriz):
+        if isinstance(matriz, list) and len(matriz) == len (matriz[0]):
+            sumaFilas = self.sumaFila(matriz, 0, 0, 0)  + self.sumaFila(matriz, len(matriz)-1, 0, 0)
+            sumaColumnas = self.sumaColumna(matriz, 0, 0, 0)  + self.sumaColumna(matriz, 0, len(matriz[0])-1, 0)
+            sumaAntiDiagonal = self.sumaAntidiagonal(matriz, 0, 0)
+            SumaTotal = sumaFilas + sumaColumnas + sumaAntiDiagonal
+            return sumaFilas, sumaColumnas, sumaAntiDiagonal, SumaTotal
+        else: return "ERROR"
+
+    def sumaFila(self, mat, f, c, res):
+        if c == len(mat[0]):
+            return res
+        else:
+            return self.sumaFila(mat, f, c+1, res+mat[f][c])
+
+    def sumaColumna(self, mat, f, c, res):
+        if f == len(mat):
+            return res
+        else:
+            return self.sumaColumna(mat, f+1, c, res+mat[f][c])
+
+    def sumaAntidiagonal(self, mat, f, res):
+        if f == len(mat):
+            return res
+        else:
+            return self.sumaAntidiagonal(mat, f+1, res+mat[f][-(f+1)])
+    #--------------------------------------------------------------------------------------------------------
+    def Estadisticas(self, matriz):
+        if isinstance(matriz, list) and len(matriz) == len (matriz[0]):
+            return self.promedio(matriz, 0, 0), self.mediana(matriz, 0, [])
+        else:
+            return "ERROR"
+
+    def promedio(self, mat, i, res):
+        if i == len(mat):
+            return res / len(mat)
+        else:
+            return self.promedio(mat, i+1, res + mat[i][i])
+
+    def mediana(self, mat, f, res):
+        if f == len(mat):
+            if len(res) % 2 != 0:
+                return (res[len(res)//2]) /2
+            else:
+                return (res[len(res)//2] + res[len(res)//2 - 1])/2
+        elif isinstance(mat[f], list):
+            return self.mediana(mat, f+1, res+mat[f])
+        else:
+            return self.mediana(mat, f+1, res)
+    #---------------------------------------------------------------------------------------------------------
+    def Polinomio(self, b, c):
+        if isinstance(b, int) and isinstance(c, int) and b <= 50:
+            return self.factores(b, c, 0, 0)
+        else:
+            return "ERROR"
+
+    def factores(self, b, c, r, s):
+        if r == b:
+            return "No se encontraron factores enteros"
+        elif s == c:
+            return self.factores(b, c, r+1, 0)
+        elif r * s == c:
+            if r + s == b:
+                return r, s
+            else:
+                return self.factores(b, c, r, s+1)
+        else:
+            return self.factores(b, c, r, s+1)
+    #-----------------------------------------------------------------------------------------------------------
+    def Notacion(self, numero):
+        if isinstance(numero, int) and numero > 0:
+            return self.NotacionInt(numero, 1)
+        elif isinstance(numero, float) and numero > 0 and numero < 1:
+            return self.NotacionFloat(numero, 1)
+        else: return "Error"
+
+    def NotacionInt(self, numero, cont):
+        if numero//10 < 10:
+            return str(numero/10)+" x 10**"+str(cont)
+        else:
+            return self.NotacionInt(numero//10, cont+1)
+
+    def NotacionFloat(self, numero, cont):
+        if numero*10 > 1:
+            return str(numero*10)+" x 10**-"+str(cont)
+        else:
+            return self.NotacionFloat(numero*10, cont+1)
+
+
